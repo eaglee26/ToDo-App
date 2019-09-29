@@ -4,10 +4,13 @@ import AppHeader from '../app-header';
 import SearchPanel from '../search-panel';
 import TodoList from '../todo-list';
 import ItemStatusFilter from '../item-status-filter';
+import ItemAddForm from '../item-add-form';
 
 import './app.css';
 
 export default class App extends Component {
+
+    maxId = 100;
 
     state = {
         todoData: [
@@ -21,11 +24,6 @@ export default class App extends Component {
         this.setState(({ todoData }) => {
             const idx = todoData.findIndex((el) => el.id === id);
             console.log(idx);
-            
-            // todoData.splice(idx, 1);
-            // const before = todoData.slice(0, idx);
-            // const after = todoData.slice(idx + 1);
-            // const newArray = [...after, ...before];
 
             const newArray = [
                 ...todoData.slice(0, idx), 
@@ -37,6 +35,30 @@ export default class App extends Component {
             };
         });
     };
+
+    addItem = (text) => {
+        //generate id
+        const newItem ={
+            label: text,
+            important: false,
+            id: this.maxId++
+        }
+        //add element in array
+        this.setState(({todoData}) => {
+            //  todoData.push(newItem);
+
+             const newArr = [
+                 ...todoData,
+                 newItem
+             ];
+
+             return {
+                 todoData: newArr
+             };
+        });
+
+        console.log('added', text);
+    }
 
     render(){
         return (
@@ -51,6 +73,7 @@ export default class App extends Component {
                     todos={this.state.todoData}
                     onDeleted={this.deleteItem}
                 />
+                <ItemAddForm addItem={this.addItem} />
             </div>
         );
     }
