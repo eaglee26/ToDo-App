@@ -95,12 +95,16 @@ export default class App extends Component {
         });
     };
 
+    onSearchChange = (term) => {
+        this.setState({ term });
+    };
+
     search(items, term)  {
-        if(term.length ===0) {
+        if(term.length === 0) {
             return items;
         }
         return items.filter((item) => {
-            return item.label.indexOf(term) > 1;
+            return item.label.toLowerCase().indexOf(term.toLowerCase()) > -1;
         })
     }
 
@@ -115,7 +119,7 @@ export default class App extends Component {
             <div className="todo-app">
                 <AppHeader toDo={todoCount} done={doneCount} />
                 <div className="top-panel d-flex">
-                    <SearchPanel />
+                    <SearchPanel onSearchChange={this.onSearchChange}/>
                     <ItemStatusFilter />
                 </div>
     
